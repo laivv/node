@@ -1,0 +1,34 @@
+.uk-upload-hidden{
+    display: none;
+}
+.uk-upload-btn{
+    background: rgb(117, 193, 223);
+    color:#fff;
+    border: none;
+    padding:5px 10px;
+    cursor: pointer;
+    outline: none;
+}
+.uk-upload-list{
+    width: 100%;
+}
+.uk-upload-clearfix::after{
+    height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+}
+.uk-upload-item{
+    float: left;
+    width:25%;
+    box-sizing: border-box;
+    padding-top: 25%;
+    position: relative;
+}
+.uk-upload-item-main{
+    position: absolute;
+    top:0;
+    left: 0;
+    width:100%;
+    height: 100%;
+}
