@@ -8,9 +8,9 @@ export default class App extends React.Component {
             tokenUrl: []
         }
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
+    // static getDerivedStateFromProps(nextProps, prevState) {
 
-    }
+    // }
 
     handleChange(files){
         console.log(files);
