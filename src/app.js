@@ -12,6 +12,10 @@ export default class App extends React.Component {
 
     }
 
+    handleChange(files){
+        console.log(files);
+    }
+
     render() {
         return (
             <div>
@@ -19,6 +23,7 @@ export default class App extends React.Component {
                     fileList={this.state.fileList}
                     previewMode={false}
                     tokenUrl={this.state.tokenUrl}
+                    onChange={files=>{this.handleChange(files)}}
                 />
             </div>
         );

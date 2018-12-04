@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cd ./build && webpack-dev-server --config webpack.config.js"
+    "dev": "cd ./build && webpack-dev-server --config webpack.config.js --hot"
   },
   "author": "",
   "license": "MIT",

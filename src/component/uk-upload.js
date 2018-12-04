@@ -1,29 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './uk-upload.css';
+import UploadFileList from './upload-file-list';
 export default class UkUpload extends React.Component {
     static defaultProps = {
+        url:'http://up.qiniu.com',
         fileList: [],
         previewMode: false,
         multiple: true,
         tokenUrl: []
     }
     static propTypes = {
+        url:PropTypes.string.isRequired,
         fileList: PropTypes.array.isRequired,
         previewMode: PropTypes.boolean,
-        tokenUrl: PropTypes.array
+        tokenUrl: PropTypes.array,
+        onChange:PropTypes.Function,
+        maxFileCount:PropTypes.number,
+        maxFileSize:PropTypes.number,
+        acceptList:PropTypes.array
     }
     constructor(props) {
         super(props);
         this.state = {
             count: 0,
-            fileList: [],
+            fileList: props.fileList,
             supportView: !!FileReader
         }
     }
+    // static getDerivedStateFromProps(nextProps, prevProps) {
+
+    // }
     createId = function () {
         let id = 0;
-        return () => ++id;
+        return () => `${Date.now()}${++id}`;
     }()
     getExt(file) {
         return file.name.match(/\.(\w{1,4})$/)[1] || '';
@@ -31,18 +41,40 @@ export default class UkUpload extends React.Component {
     openFileBrowser() {
         this.refs.file.click();
     }
+    copyFileList() {
+        return [...this.state.fileList].map(file => {
+            return { ...file };
+        })
+    }
+    getFileByFile(fileList, file) {
+        return fileList.filter(rawFile => rawFile.id === file.id)[0] || null;
+    }
+    updateFile(file, options) {
+        let fileList = this.copyFileList();
+        file = this.getFileByFile(fileList, file)
+        for (let attr in options) {
+            file[attr] = options[attr];
+        }
+        this.updateFileList(fileList);
+    }
+    updateFileList(fileList){
+        this.setState({
+            fileList
+        })
+        this.props.onChange && this.props.onChange(fileList);
+    }
     handleStart(file) {
         if (this.state.supportView) {
-            const reader = new FileReader(file.rawFile)
-            reader.readAsDataURL();
+            const reader = new FileReader()
+            reader.readAsDataURL(file.rawFile);
             reader.onload = () => {
-                file.src = reader.result;
+                this.updateFile(file, { src: reader.result })
             }
         }
     }
     handleFileChange() {
-        let fileList = [].slice.call(this.refs.file.files, 0);
-        fileList = fileList.map(rawFile => {
+        let fileList = [].slice.call(this.refs.file.files, 0)
+        .map(rawFile => {
             let file = {
                 id: this.createId(),
                 name: rawFile.name,
@@ -51,11 +83,10 @@ export default class UkUpload extends React.Component {
                 status: 'pending',
                 src: ''
             }
+            this.handleStart(file);
             return file;
-        });
-        this.setState({
-            fileList
-        });
+        }).concat(this.copyFileList());
+        this.updateFileList(fileList);
     }
     render() {
         let isMutiple = this.props.mutiple;
@@ -70,18 +101,7 @@ export default class UkUpload extends React.Component {
                     )
                 }
                 <button className="uk-upload-btn" onClick={() => this.openFileBrowser()}>上传文件</button>
-                <div className="uk-upload-list uk-upload-clearfix">
-                    {
-                        fileList.map(item => <div className="uk-upload-item">
-                            <div className="uk-upload-item-main">
-                                <div>
-                                    <img src={item.src} alt="" />
-                                </div>
-                                {item.name}
-                            </div>
-                        </div>)
-                    }
-                </div>
+                <UploadFileList fileList={fileList}></UploadFileList>
             </div>
         )
     }
