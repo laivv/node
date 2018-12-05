@@ -24,6 +24,7 @@ export default class App extends React.Component {
                     previewMode={false}
                     tokenUrl={this.state.tokenUrl}
                     onChange={files=>{this.handleChange(files)}}
+                    maxFileCount={5}
                 />
             </div>
         );
