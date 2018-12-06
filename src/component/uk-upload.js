@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './uk-upload.css';
+import './font/iconfont.css';
 import UploadFileList from './upload-file-list';
 import Uploader from './Uploader';
 export default class UkUpload extends Component {
@@ -149,6 +150,30 @@ export default class UkUpload extends Component {
 		let key = (this.state.tokens.prefix ? this.state.tokens.prefix : 'A') + '.' + this.createGuid(8, 16) + ext;
 		return key;
 	}
+	getFileType(ext) {
+		if (['jpg', 'png', 'gif', 'bmp', 'jpeg', 'webp'].indexOf(ext) > -1) {
+			return 'image';
+		}
+		if (['mp4', 'avi', 'rmvb', 'mkv', '3gp'].indexOf(ext) > -1) {
+			return 'video';
+		}
+		if (['rar', 'zip', '7z', 'cab'].indexOf(ext) > -1) {
+			return 'rar';
+		}
+		if (ext === 'txt') {
+			return 'text';
+		}
+		if (['mp3', 'ogg', 'm4a', 'wav', 'ape', 'flac', 'wma', 'aac', 'amr'].indexOf(ext) > -1) {
+			return 'audio';
+		}
+		return 'file';
+	}
+	reload(file) {
+		this.updateFile(file,{status:'waiting',progress:0})
+		.then(()=>{
+			this.upload(file);
+		})
+	}
 	upload(file) {
 		let options = { file };
 		if (this.state.isQiniu) {
@@ -214,11 +239,13 @@ export default class UkUpload extends Component {
 		let fileList = this.copyFileList();
 		const { length } = fileList;
 		let addFileList = Array.from(this.inputRef.current.files).map(rawFile => {
+			let ext = this.getExt(rawFile);
 			return {
 				id: this.createId(),
 				name: rawFile.name,
-				ext: this.getExt(rawFile),
+				ext,
 				size:rawFile.size / 1024 /1024,
+				type:this.getFileType(ext),
 				rawFile: rawFile,
 				status: 'pending',
 				progress: 0,
@@ -326,6 +353,7 @@ export default class UkUpload extends Component {
 					readonly={this.props.previewMode}
 					showFileName={this.props.showFileName}
 					onAddClick={() => this.openFileBrowser()}
+					onRetryClick={file=>this.reload(file)}
 					allowUpload={!this.state.isOverMaxCount}
 				/>
 			</div>

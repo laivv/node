@@ -26,7 +26,7 @@ export default class App extends React.Component {
                     onChange={files=>{this.handleChange(files)}}
                     maxFileCount={1}
                     maxFileSize={1}
-                    acceptList={['gif']}
+                    acceptList={[]}
                     showFileName={true}
                     multiple={false}
                     beforeFileAdd={file=>!console.log('beforeFileAdd')}
