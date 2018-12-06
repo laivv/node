@@ -32,7 +32,7 @@
 }
 .uk-upload-item-inner{
     box-sizing: border-box;
-    padding: 20px 20px 20px 0;
+    padding: 20px;
 }
 .uk-upload-image
 {
@@ -44,6 +44,8 @@
 }
 .uk-upload-progress{
     color: #fff;
+    font-weight: bold;
+    font-family: 'microsoft yahei';
 }
 .uk-upload-name{
     width: 100%;

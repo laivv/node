@@ -7,7 +7,7 @@
     "dev": "cd ./build && webpack-dev-server --mode development --progress --config dev.js --hot",
     "build": "cd ./build && webpack --mode production --progress --config prod.js"
   },
-  "author": "",
+  "author": "lingluo",
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^9.4.2",

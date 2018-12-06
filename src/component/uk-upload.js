@@ -9,6 +9,7 @@ export default class UkUpload extends Component {
 		fileList: [],
 		previewMode: false,
 		multiple: true,
+		showFileName:false,
 		acceptList: [],
 		tokenUrl: [],
 	};
@@ -17,6 +18,7 @@ export default class UkUpload extends Component {
 		fileList: PropTypes.array,
 		multiple: PropTypes.bool,
 		previewMode: PropTypes.bool,
+		showFileName:PropTypes.bool,
 		tokenUrl: PropTypes.array,
 		onChange: PropTypes.func,
 		maxFileCount: PropTypes.number,
@@ -27,6 +29,8 @@ export default class UkUpload extends Component {
 		onTypeError: PropTypes.func,
 		onSizeError: PropTypes.func,
 		onFileSuccess: PropTypes.func,
+		onFileError:PropTypes.func,
+		onUploadComplete:PropTypes.func
 	};
 	constructor(props) {
 		super(props);
@@ -45,7 +49,8 @@ export default class UkUpload extends Component {
 		return () => `${Date.now()}${++id}`;
 	})();
 	getExt(file) {
-		return file.name.match(/\.(\w{1,4})$/)[1] || '';
+		const ret = file.name.match(/\.(\w+)$/);
+		return ret ? ret[1] : '';
 	}
 	openFileBrowser() {
 		this.inputRef.current.click();
@@ -61,10 +66,22 @@ export default class UkUpload extends Component {
 	updateFile(file, options) {
 		let fileList = this.copyFileList();
 		file = this.getFileByFile(fileList, file);
-		for (let attr in options) {
-			file[attr] = options[attr];
+		if(file){
+			for (let attr in options) {
+				file[attr] = options[attr];
+			}
+			return this.updateFileList(fileList);
 		}
-		return this.updateFileList(fileList);
+		return Promise.resolve();
+	}
+	getUploadStatus(){
+		const pendings = ['waiting','pending'];
+	  for (let [index,file] of this.state.fileList.entries()){
+		  if(pendings.includes(file.status )){
+			  return false
+		  }
+	  }	
+	  return true
 	}
 	updateFileList(fileList) {
 		return new Promise((resolve, reject) => {
@@ -157,8 +174,7 @@ export default class UkUpload extends Component {
 					let params = Object.keys(this.state.tokens).length ? this.state.tokens : undefined;
 					src = this.props.onFileSuccess(file, response, params);
 					if (file.src) {
-						this.updateFile(file, { src: file.src, status: 'success' });
-						return;
+						src = file.src;
 					}
 					src =
 						src === undefined
@@ -167,11 +183,22 @@ export default class UkUpload extends Component {
 								: response
 							: src;
 				}
-				this.updateFile(file, { src, status: 'success' });
+				this.updateFile(file, { src, status: 'success' })
+				.then(()=>{
+					if(this.props.onUploadComplete && this.getUploadStatus()){
+						this.props.onUploadComplete();
+					}
+				})
 			})
 			.catch(file => {
 				//file.status = 'error';
-				this.updateFile(file, { status: 'error' });
+				this.updateFile(file, { status: 'error' })
+				.then(()=>{
+					this.props.onFileError && this.props.onFileError(file);
+					if(this.props.onUploadComplete && this.getUploadStatus()){
+						this.props.onUploadComplete();
+					}
+				})
 			});
 	}
 	handleLengthChange(fileList) {
@@ -191,6 +218,7 @@ export default class UkUpload extends Component {
 				id: this.createId(),
 				name: rawFile.name,
 				ext: this.getExt(rawFile),
+				size:rawFile.size / 1024 /1024,
 				rawFile: rawFile,
 				status: 'pending',
 				progress: 0,
@@ -249,10 +277,17 @@ export default class UkUpload extends Component {
 		return fileList;
 	}
 	handleFileRemove(file) {
+		const oldStatus = this.getUploadStatus();
 		let fileList = this.copyFileList();
 		this.removeFile(fileList, file);
-		this.updateFileList(fileList);
-		this.handleLengthChange(fileList);
+		this.updateFileList(fileList)
+		.then(()=>{
+			this.handleLengthChange(fileList);
+			if(this.props.onUploadComplete && !oldStatus && this.getUploadStatus()){
+				this.props.onUploadComplete();
+			}
+
+		})
 	}
 	render() {
 		let isMutiple = this.props.mutiple;
@@ -263,6 +298,7 @@ export default class UkUpload extends Component {
 					<input
 						type="file"
 						className="uk-upload-hidden"
+						multiple="multiple"
 						ref={this.inputRef}
 						onChange={() => {
 							this.handleFileChange();
@@ -271,7 +307,6 @@ export default class UkUpload extends Component {
 				) : (
 					<input
 						type="file"
-						multiple="multiple"
 						className="uk-upload-hidden"
 						ref={this.inputRef}
 						onChange={() => {
@@ -288,8 +323,8 @@ export default class UkUpload extends Component {
 					onItemRemove={file => {
 						this.handleFileRemove(file);
 					}}
-					readonly={false}
-					showFileName={true}
+					readonly={this.props.previewMode}
+					showFileName={this.props.showFileName}
 					onAddClick={() => this.openFileBrowser()}
 					allowUpload={!this.state.isOverMaxCount}
 				/>

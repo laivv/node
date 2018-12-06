@@ -5,13 +5,11 @@ export default class UploadFileList extends React.Component {
 	static defaultProps = {
 		fileList: [],
 		readonly: false,
-		disabledUpload: false,
 		showFileName: false,
 	};
 	static propTypes = {
 		fileList: PropTypes.array.isRequired,
 		readonly: PropTypes.bool.isRequired,
-		disabledUpload: PropTypes.bool.isRequired,
 		showFileName: PropTypes.bool.isRequired,
 		allowUpload: PropTypes.bool.isRequired,
 		onItemClick: PropTypes.func,
@@ -55,9 +53,11 @@ export default class UploadFileList extends React.Component {
 								<div className="uk-upload-match-parent uk-upload-image">
 									<img className="uk-upload-max-parent uk-upload-center" src={item.src} alt="" />
 								</div>
+								{ item.status !== 'success' &&
 								<div className="uk-upload-fill-parent uk-upload-mask">
 									<span className="uk-upload-center uk-upload-progress">{item.progress}%</span>
 								</div>
+								}
 								{!this.props.readonly && (
 									<div className="uk-upload-item-remove" onClick={this.handleFileRemove(item)}>
 										×
@@ -72,7 +72,7 @@ export default class UploadFileList extends React.Component {
 						</div>
 					</div>
 				))}
-				{this.props.allowUpload && (
+				{this.props.allowUpload && !this.props.readonly && (
 					<div className="uk-upload-item">
 						<div className="uk-upload-fill-parent uk-upload-item-inner">
 							<div

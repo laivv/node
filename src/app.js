@@ -24,7 +24,18 @@ export default class App extends React.Component {
                     previewMode={false}
                     tokenUrl={this.state.tokenUrl}
                     onChange={files=>{this.handleChange(files)}}
-                    maxFileCount={5}
+                    maxFileCount={1}
+                    maxFileSize={1}
+                    acceptList={['gif']}
+                    showFileName={true}
+                    multiple={false}
+                    beforeFileAdd={file=>!console.log('beforeFileAdd')}
+                    onCountError={files=>console.log('文件数量超出',files)}
+                    onSizeError={files=>console.log('文件大小错误',files)}
+                    onTypeError={files=>console.log('文件类型错误',files)}
+                    onFileSuccess={file=>console.log('成功上传文件',file)}
+                    onFileError={file=>console.log('文件上传失败',file)}
+                    onUploadComplete={()=>console.log('上传完成')}
                 />
             </div>
         );
