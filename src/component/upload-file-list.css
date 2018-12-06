@@ -100,3 +100,21 @@
     box-sizing: border-box;
 }
 
+.uk-upload-error .iconfont0{
+    color:red;
+    font-size: 20px;
+}
+.uk-upload-retry{
+    display: none;
+    cursor: pointer;
+    color: #fff;
+}
+.uk-upload-retry .iconfont0{
+    font-size: 30px;
+}
+.uk-upload-error-mask:hover .uk-upload-retry{
+    display: inline-block;
+}
+.uk-upload-error-mask:hover .uk-upload-error{
+    display: none;
+}
