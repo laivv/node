@@ -1,19 +1,27 @@
-import React from 'react';
-import UkUpload from './component/uk-upload.js';
-export default class App extends React.Component {
+###  file upload for React
+This is a lightweight React upload component
+
+##### build
+- development mode
+```sh
+npm run dev
+```
+- build component
+```sh
+npm run build
+```
+
+#### Useage
+```javascript
+import React ,{ Component } from 'react';
+import UkUpload from './uk-upload';
+
+export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileList: [],
-            tokenUrl: []
+            fileList: []
         }
-    }
-    // static getDerivedStateFromProps(nextProps, prevState) {
-
-    // }
-
-    handleChange(files){
-        console.log(files);
     }
 
     render() {
@@ -22,8 +30,8 @@ export default class App extends React.Component {
                 <UkUpload
                     fileList={this.state.fileList}
                     previewMode={false}
-                    tokenUrl={this.state.tokenUrl}
-                    onChange={files=>{this.handleChange(files)}}
+                    tokenUrl={[]}
+                    onChange={files=>console.log(files)}
                     maxFileCount={1}
                     maxFileSize={1}
                     acceptList={['gif']}
@@ -39,7 +47,6 @@ export default class App extends React.Component {
                 />
             </div>
         );
-
     }
-
 }
+```
