@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './upload-file-list.css';
-export default class UploadFileList extends React.Component {
+import './UploadFileList.css';
+export default class UploadFileList extends Component {
 	static defaultProps = {
 		fileList: [],
 		readonly: false,
@@ -15,7 +15,7 @@ export default class UploadFileList extends React.Component {
 		onItemClick: PropTypes.func,
 		onItemRemove: PropTypes.func,
 		onAddClick: PropTypes.func,
-		onRetryClick:PropTypes.func,
+		onRetryClick: PropTypes.func,
 	};
 	constructor(props) {
 		super(props);
@@ -44,8 +44,8 @@ export default class UploadFileList extends React.Component {
 	handleAddClick() {
 		this.props.onAddClick && this.props.onAddClick();
 	}
-	handRetryClick(file){
-		return ()=>{
+	handRetryClick(file) {
+		return () => {
 			this.props.onRetryClick && this.props.onRetryClick(file);
 		}
 	}
@@ -57,36 +57,36 @@ export default class UploadFileList extends React.Component {
 						<div className="uk-upload-fill-parent uk-upload-item-inner">
 							<div className="uk-upload-match-parent" onClick={this.handleFileClick(item)}>
 								<div className="uk-upload-match-parent uk-upload-image">
-								{item.type === 'image' &&
-									<img className="uk-upload-max-parent uk-upload-center" src={item.src} alt="" />
-								}
-								{
-									item.type !== 'image' &&
-									<div className="uk-upload-match-parent">
-										<span 
-											className={`iconfont0 uk-upload-center ${item.type === 'text' ? 'icon-wenbenwenjian' : ''} ${item.type === 'file' ? 'icon-file' : ''} ${item.type === 'audio' ? 'icon--file-music' : ''} ${item.type=== 'video' ? 'icon-filevideo' : ''} ${item.type==='rar' ? 'icon-filezip' : ''}`}
-										>
-										</span>
-									</div>
-								}
-								</div>
-								{ item.status !== 'success' &&
-								<div className="uk-upload-fill-parent uk-upload-mask">
-									{['waiting','pending'].includes(item.status) &&
-								
-									<span className="uk-upload-center uk-upload-progress">{item.progress}%</span>
+									{item.type === 'image' &&
+										<img className="uk-upload-max-parent uk-upload-center" src={item.src} alt="" />
 									}
 									{
-										item.status === 'error' &&(
-											<div className="uk-upload-match-parent uk-upload-error-mask">
-										<span className="uk-upload-center uk-upload-error">
-											<i class="iconfont0 icon-error"></i>
-										</span>
-										<span className="uk-upload-center uk-upload-retry" onClick={this.handRetryClick(item)}>
-											<i class="iconfont0 icon-iconziti38"></i>
-										</span></div>)
+										item.type !== 'image' &&
+										<div className="uk-upload-match-parent">
+											<span
+												className={`iconfont0 uk-upload-center ${item.type === 'text' ? 'icon-wenbenwenjian' : ''} ${item.type === 'file' ? 'icon-file' : ''} ${item.type === 'audio' ? 'icon--file-music' : ''} ${item.type === 'video' ? 'icon-filevideo' : ''} ${item.type === 'rar' ? 'icon-filezip' : ''}`}
+											>
+											</span>
+										</div>
 									}
 								</div>
+								{item.status !== 'success' &&
+									<div className="uk-upload-fill-parent uk-upload-mask">
+										{['waiting', 'pending'].includes(item.status) &&
+
+											<span className="uk-upload-center uk-upload-progress">{item.progress}%</span>
+										}
+										{
+											item.status === 'error' && (
+												<div className="uk-upload-match-parent uk-upload-error-mask">
+													<span className="uk-upload-center uk-upload-error">
+														<i className="iconfont0 icon-error"></i>
+													</span>
+													<span className="uk-upload-center uk-upload-retry" onClick={this.handRetryClick(item)}>
+														<i className="iconfont0 icon-iconziti38"></i>
+													</span></div>)
+										}
+									</div>
 								}
 								{!this.props.readonly && (
 									<div className="uk-upload-item-remove" onClick={this.handleFileRemove(item)}>

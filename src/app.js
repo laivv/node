@@ -1,5 +1,5 @@
 import React from 'react';
-import UkUpload from './component/uk-upload.js';
+import Upload from './upload/Upload.js';
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <UkUpload
+                <Upload
                     fileList={this.state.fileList}
                     previewMode={false}
                     tokenUrl={this.state.tokenUrl}

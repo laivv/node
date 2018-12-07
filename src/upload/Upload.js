@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './uk-upload.css';
+import './Upload.css';
 import './font/iconfont.css';
-import UploadFileList from './upload-file-list';
-import Uploader from './Uploader';
-export default class UkUpload extends Component {
+import UploadFileList from './UploadFileList';
+import Uploader from './uploader';
+export default class Upload extends Component {
 	static defaultProps = {
 		url: 'http://up.qiniu.com',
 		fileList: [],

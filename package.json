@@ -2,7 +2,7 @@
   "name": "react-upload",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/component/uk-upload.js",
+  "main": "./src/upload/Upload.js",
   "scripts": {
     "dev": "cd ./build && webpack-dev-server --mode development --progress --config dev.js --hot",
     "build": "cd ./build && webpack --mode production --progress --config prod.js"
