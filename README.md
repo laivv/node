@@ -11,7 +11,7 @@ npm run dev
 npm run build
 ```
 
-#### Useage
+#### Usage
 ```javascript
 import React ,{ Component } from 'react';
 import UkUpload from './uk-upload';
