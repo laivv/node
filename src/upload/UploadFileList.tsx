@@ -1,8 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import './UploadFileList.css';
-export default class UploadFileList extends Component {
-	static defaultProps = {
+export default class UploadFileList extends React.Component {
+  props:{
+    fileList: any[],
+		readonly: boolean,
+		showFileName: boolean,
+		allowUpload: boolean,
+		onItemClick: any,
+		onItemRemove: any,
+		onAddClick: any,
+		onRetryClick: any,
+  }
+	static defaultProps :any = {
 		fileList: [],
 		readonly: false,
 		showFileName: false,
@@ -17,7 +27,7 @@ export default class UploadFileList extends Component {
 		onAddClick: PropTypes.func,
 		onRetryClick: PropTypes.func,
 	};
-	constructor(props) {
+	constructor(props:any) {
 		super(props);
 		// this.state = {
 		// 	allowUpload: props.allowUpload,
@@ -31,12 +41,12 @@ export default class UploadFileList extends Component {
 	// 	}
 	// 	return null;
 	// }
-	handleFileClick(item) {
+	handleFileClick(item:any) {
 		return () => {
 			this.props.onItemClick && this.props.onItemClick(item);
 		};
 	}
-	handleFileRemove(item) {
+	handleFileRemove(item:any) {
 		return () => {
 			this.props.onItemRemove && this.props.onItemRemove(item);
 		};
@@ -44,7 +54,7 @@ export default class UploadFileList extends Component {
 	handleAddClick() {
 		this.props.onAddClick && this.props.onAddClick();
 	}
-	handRetryClick(file) {
+	handRetryClick(file:any) {
 		return () => {
 			this.props.onRetryClick && this.props.onRetryClick(file);
 		}
@@ -72,7 +82,7 @@ export default class UploadFileList extends Component {
 								</div>
 								{item.status !== 'success' &&
 									<div className="uk-upload-fill-parent uk-upload-mask">
-										{['waiting', 'pending'].includes(item.status) &&
+										{['waiting', 'pending'].indexOf(item.status) > -1 &&
 
 											<span className="uk-upload-center uk-upload-progress">{item.progress}%</span>
 										}
