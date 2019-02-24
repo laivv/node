@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './uk-upload.css';
+import './Upload.css';
 import './font/iconfont.css';
-import UploadFileList from './upload-file-list';
-import Uploader from './Uploader';
-export default class UkUpload extends Component {
+import UploadFileList from './UploadFileList';
+import Uploader from './uploader';
+import Previewer from'../previewer/Previewer';
+export default class Upload extends Component {
 	static defaultProps = {
 		url: 'http://up.qiniu.com',
 		fileList: [],
@@ -345,7 +346,8 @@ export default class UkUpload extends Component {
 				<UploadFileList
 					fileList={fileList}
 					onItemClick={file => {
-						console.log(file);
+						const index = this.state.fileList.indexOf(file);
+						this.$previewer.open(index);
 					}}
 					onItemRemove={file => {
 						this.handleFileRemove(file);
@@ -356,6 +358,10 @@ export default class UkUpload extends Component {
 					onRetryClick={file=>this.reload(file)}
 					allowUpload={!this.state.isOverMaxCount}
 				/>
+				<Previewer
+					fileList={fileList}
+					ref={ref=>this.$previewer = ref}
+				></Previewer>
 			</div>
 		);
 	}

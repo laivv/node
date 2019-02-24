@@ -1,10 +1,19 @@
 import React from 'react';
-import UkUpload from './component/uk-upload.js';
+import Upload from './upload/Upload.js';
+import Previewer from './previewer/Previewer.js';
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileList: [],
+            fileList: [
+                {
+                    id:1,
+                    name:'名称',
+                    status:'success',
+                    type:'image',
+                    src:'http://v.51zxw.net/m/img/kcbm/705.jpg'
+                }
+            ],
             tokenUrl: []
         }
     }
@@ -19,7 +28,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <UkUpload
+                <Upload
                     fileList={this.state.fileList}
                     previewMode={false}
                     tokenUrl={this.state.tokenUrl}

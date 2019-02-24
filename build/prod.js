@@ -7,7 +7,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 module.exports = {
 	entry: {
 		vendor: ['react', 'react-dom'],
-		'uk-upload': path.join(basePath, './src/component/uk-upload.js'),
+		'Upload': path.join(basePath, './src/upload/Upload.js'),
 	},
 
 	output: {
