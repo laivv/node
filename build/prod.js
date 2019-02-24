@@ -48,7 +48,7 @@ module.exports = {
   plugins: [
     new htmlWebpackPlugin({
       title: 'react - upload',
-      chunks: ['vendor', 'uk-upload'],
+      chunks: ['vendor', 'upload'],
       filename: 'index.html',
       template: path.join(basePath, './index.html'),
       inject: 'body',
