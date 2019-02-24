@@ -1,7 +1,7 @@
-###  file upload for React
-This is a lightweight React upload component
+#  React-upload
+轻量级的react上传组件，支持图片预览，音频和视频播放
 
-##### build
+## build
 - development mode
 ```sh
 npm run dev
@@ -11,10 +11,10 @@ npm run dev
 npm run build
 ```
 
-#### Useage
+## Usage
 ```javascript
 import React ,{ Component } from 'react';
-import UkUpload from './uk-upload';
+import Upload from './upload';
 
 export default class App extends Component {
     constructor(props) {
@@ -27,7 +27,7 @@ export default class App extends Component {
     render() {
         return (
             <div>
-                <UkUpload
+                <Upload
                     fileList={this.state.fileList}
                     previewMode={false}
                     tokenUrl={[]}
